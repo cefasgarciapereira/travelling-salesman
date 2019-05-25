@@ -26,13 +26,9 @@ Consider that 0 ≤ n ≤ 100 and that 0 ≤ X, Y ≤ 1000.
 
 ## Output ##
 
-The output must be written to a text file and must contain the sum of the distances and a
-sequence of numbers, representing the order in which the cities were visited. Always start
+The output is written to a text file and contains the sum of the distances and a
+sequence of numbers, representing the order in which the cities were visited. It always start
 this sequence with the city 1.
-
-Example (four cities):
-3200.00
-1 2 3 4
 
 | Example (four cities) |
 | --------------------- |
