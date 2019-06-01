@@ -7,6 +7,7 @@ struct point {
     int x;
     int y;
 };
+
 double distance(struct point a, struct point b);
 double allDistances(int number_of_points);
 char toggleXY(char xy);
@@ -22,6 +23,7 @@ int main(){
     getPoints();
     printPoints(pointsLength);
     allDistances(pointsLength);
+    printf("\n\n");
     return 0;
 }
 
