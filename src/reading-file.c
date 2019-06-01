@@ -8,21 +8,23 @@ struct point {
     int y;
 };
 double distance(struct point a, struct point b);
+double allDistances(int number_of_points);
 char toggleXY(char xy);
 int getPointsLength();
 int charToInt(char c);
-void printPoints();
+void printPoints(int n);
 struct point points[100];
-
-
 
 int main(){
     int pointsLength;
+    int i;
     pointsLength = getPointsLength();
     getPoints();
-    printPoints();
+    printPoints(pointsLength);
+    allDistances(pointsLength);
     return 0;
 }
+
 void getPoints(){
     FILE *fp;
     fp = fopen("../assets/trace.txt", "r");
@@ -104,6 +106,17 @@ int getPointsLength(){
     return atoi(pointsLengthTemp);
 }
 
+double allDistances(int number_of_points){
+    int i,j;
+    for(i = 0;i<number_of_points;i++){
+        for(j=0;j<number_of_points;j++){
+            if(i != j){
+                printf("\nDistance p%d x p%d: %.2lf",i,j,distance(points[i],points[j]));
+            }
+        }
+    }
+}
+
 double distance(struct point a, struct point b ){
     return sqrt( pow(b.x - a.x, 2) + pow(b.y - a.y, 2));
 }
@@ -170,14 +183,9 @@ char toggleXY(char xy){
     return resp;
 }
 
-void printPoints(){
-    int i,j;
-    for(i=0;i<100;i++){
-        if(j==10){
-            printf("\n");
-            j=0;
-        }
-        j++;
-        printf("Point %d: %d %d ",i,points[i].x, points[i].y);
+void printPoints(int n){
+    int i;
+    for(i=0;i<n;i++){
+        printf("Point %d: (%d , %d)\n",i,points[i].x,points[i].y);
     }
 }

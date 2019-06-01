@@ -1,3 +1,0 @@
-#!/bin/bash
-gcc -o reading-file reading-file.c -lm
-./reading-file
