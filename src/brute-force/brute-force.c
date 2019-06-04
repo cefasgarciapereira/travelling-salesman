@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 struct point {
     int x;
@@ -67,13 +68,23 @@ int main(){
     int pointsLength;
     int i;
     int pointsIndexes[100];
+    double total_time;
+    clock_t start, end;
+
     for(i=0;i<100;i++){
-      pointsIndexes[i]=i;
+      pointsIndexes[i]=i; // not an elegant way, but it sets the index value to an array. So we can print the proper path.
     }
     pointsLength = getPointsLength();
     getPoints();
+    start = clock();
+    srand(time(NULL));
+    //time count starts
     permute(pointsIndexes,0,pointsLength-1);
+    end = clock();
+    //calulate total time
+    total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
     printResult(pointsLength);
+    printf("\nTime taken to solve it: %.2f miliseconds\n", total_time*1000);
     return 0;
 }
 
