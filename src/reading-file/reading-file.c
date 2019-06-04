@@ -29,7 +29,7 @@ int main(){
 
 void getPoints(){
     FILE *fp;
-    fp = fopen("../assets/trace.txt", "r");
+    fp = fopen("../../assets/trace.txt", "r");
     char ch;
     char XorY = 'x';
     int i = 0;
@@ -47,7 +47,7 @@ void getPoints(){
     }while(ch != '\n');
 
     while((ch = fgetc(fp)) != EOF){
-     
+
      if(ch == ' '){
          if(XorY == 'x'){
              points[i].x = number;
@@ -73,11 +73,11 @@ void getPoints(){
          number = 0;
          i++;
      }
-     
+
      if(ch=='0' || ch=='1' || ch=='2' || ch=='3' || ch=='4' || ch=='5' || ch=='6' || ch=='7' || ch=='8' || ch=='9'){
          number = (number*10) + charToInt(ch);
      }
-    }   
+    }
     if(XorY == 'x'){
         points[i].x = number;
     }
@@ -93,7 +93,7 @@ int getPointsLength(){
     char pointsLengthTemp [4];// The amount of points is limited to 100, so we only need 3 digits and one for EOF -> [1] [0] [0] [\0]
     int i = 0;
     char ch;
-    fp = fopen("../assets/trace.txt", "r");
+    fp = fopen("../../assets/trace.txt", "r");
     ch = fgetc(fp);
 
     while((ch != '\n') && (ch != EOF)){
@@ -130,7 +130,7 @@ int charToInt(char c){
         case'0':
             i = 0;
         break;
-        
+
         case'1':
             i = 1;
         break;
