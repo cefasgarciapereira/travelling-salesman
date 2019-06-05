@@ -57,7 +57,7 @@ void permute(int vector[], int start, int end){
 }
 
 void backToFirst(int n){
-  bestPathEver[n+1] = 0;
+  bestPathEver[n+1] = bestPathEver[0];
   bestDistanceEver = bestDistanceEver + distance(points[bestPathEver[n-1]],points[0]);
 }
 
