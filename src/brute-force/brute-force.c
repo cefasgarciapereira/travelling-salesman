@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -83,7 +84,7 @@ int main(){
     start = clock();
     srand(time(NULL));
     //time count starts
-    permute(pointsIndexes,0,pointsLength-1);
+    permute(pointsIndexes,1,pointsLength-1);
     backToFirst(pointsLength);
     end = clock();
     //calulate total time
