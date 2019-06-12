@@ -106,7 +106,7 @@ int main(){
     srand(time(NULL));
     //time count starts
     get(pointsLength);
-    mincost(0, pointsLength);
+    mincost(1, pointsLength);
     put();
     end = clock();
     //calulate total time
