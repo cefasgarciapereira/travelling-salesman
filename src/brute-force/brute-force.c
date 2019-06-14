@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -33,15 +32,16 @@ void permute(int vector[], int start, int end){
 
  if(start == end){
    for(c=0;c<end+1;c++){
-     //printf("%d ",vector[c]); //this print shows us all the path permutations
+     printf("%d ",vector[c]); //this print shows us all the path permutations
    }
+   printf("\n");
    for(c=0;c<end;c++){
      //printf("dist(%d %d)",vector[c], vector[c+1]); // this print show us the par of points, like: (1 2)
      //printf(" = %.2lf ",distance(points[vector[c]], points[vector[c+1]])); //this print shows us the distance of the two points above (the edges)
      totalDistance = totalDistance + distance(points[vector[c]], points[vector[c+1]]); //the total distance of the path
    }
    //printf("\nTotal Distance = %.2lf",totalDistance);
-   if(totalDistance < bestDistanceEver){ //if this is the shortest path, save it!
+   if(totalDistance <= bestDistanceEver){ //if this is the shortest path, save it!
      bestDistanceEver = totalDistance;
      for(i=0;i<end+1;i++){
        bestPathEver[i] = vector[i]; // also save the path itself
@@ -81,6 +81,7 @@ int main(){
     }
     pointsLength = getPointsLength();
     getPoints();
+    allDistances(pointsLength);
     start = clock();
     srand(time(NULL));
     //time count starts
@@ -88,7 +89,7 @@ int main(){
     backToFirst(pointsLength);
     end = clock();
     //calulate total time
-    total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
+    total_time = ((double) (end - (start + 1)) / CLOCKS_PER_SEC);
     printResult(pointsLength);
     printf("\nTime taken to solve it: %.2f miliseconds\n", total_time*1000);
     return 0;

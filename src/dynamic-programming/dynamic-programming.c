@@ -1,57 +1,72 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <time.h>
-#define INT_MAX 999999
-
-int n;
-int dist[100][100];
-int VISITED_ALL;
-int dp[100][100];
-
+double a[100][100];
+int visited[10],n,cost=0; // from the algorithm
 struct point {
     int x;
     int y;
 };
 double distance(struct point a, struct point b);
-double allDistances(int number_of_points, int print);
+double allDistances(int number_of_points);
 char toggleXY(char xy);
 int getPointsLength();
 int charToInt(char c);
 void printPoints(int n);
 struct point points[100];
-double costMatrix[100][100];
-int minFLag = 0;
-int  tsp(int mask,int pos){
 
-	if(mask==VISITED_ALL){
-		return dist[pos][0];
+void get()
+{
+	int i,j;
+	printf("\n\nThe cost list is:\n\n");
+	for( i=0;i < n;i++)
+	{
+		printf("\n\n");
+		for(j=0;j < n;j++)
+			printf("\t%d",a[i][j]);
 	}
-	if(dp[mask][pos]!=-1){
-	   return dp[mask][pos];
-	}
-
-	//Now from current node, we will try to go to every other node and take the min ans
-	int ans = INT_MAX;
-
-	//Visit all the unvisited cities and take the best route
-	for(int city=0;city<n;city++){
-
-		if((mask&(1<<city))==0){
-			int newAns = dist[pos][city] + tsp( mask|(1<<city), city);
-			ans = min(ans, newAns);
-		}
-	}
-	return dp[mask][pos] = ans;
 }
 
-int min(int a, int b){
-  if(a<b){
-    return a;
-  }else{
-    return b;
-  }
+void mincost(int city)
+{
+	int i,ncity;
+	visited[city]=1;	
+	printf("%d -> ",city);
+	ncity=least(city);
+	if(ncity==999)
+	{
+		ncity=0;
+		printf("%d",ncity);
+		cost+=a[city][ncity];
+		return;
+	}
+	mincost(ncity);
+}
+
+int least(int c)
+{
+	int i,nc=999;
+	int min=999,kmin;
+	for(i=0;i < n;i++)
+	{
+		if((a[c][i]!=0)&&(visited[i]==0))
+			if(a[c][i] < min)
+			{
+				min=a[i][0]+a[c][i];
+				kmin=a[c][i];
+				nc=i;
+			}
+	}
+	if(min!=999)
+		cost+=kmin;
+	return nc;
+}
+
+void put()
+{
+	printf("\n\nMinimum cost:");
+	printf("%d",cost);
 }
 
 int main(){
@@ -60,32 +75,11 @@ int main(){
     pointsLength = getPointsLength();
     n = pointsLength;
     getPoints();
-    printPoints(pointsLength);
-    allDistances(pointsLength,1);
-    double total_time;
-    clock_t start, end;
-    printf("\n\n");
-    /* init the dp array */
-    VISITED_ALL = (1<<pointsLength)-1;
-    for(int i=0;i<(1<<pointsLength);i++){
-        for(int j=0;j<pointsLength;j++){
-            dp[i][j] = -1;
-        }
-    }
-    /* init the cost array */
-    for(int i=0;i<(1<<pointsLength);i++){
-        for(int j=0;j<pointsLength;j++){
-            dist[i][j] = costMatrix[i][j];
-        }
-    }
-    start = clock();
-    srand(time(NULL));
-    //time count starts
-    printf("Best Distance Ever: %d\n",tsp(1,0));
-    end = clock();
-    //calulate total time
-    total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("\nTime taken to solve it: %.2lf miliseconds\n", total_time*1000);
+    //printPoints(pointsLength);
+    //allDistances(pointsLength);
+    populateA(pointsLength);
+	mincost(0);
+    printf("\nThe Best Path Ever is %d\n",cost);
     return 0;
 }
 
@@ -170,21 +164,29 @@ int getPointsLength(){
     return atoi(pointsLengthTemp);
 }
 
-double allDistances(int number_of_points, int print){//if print is 1, print the result
+double allDistances(int number_of_points){
     int i,j;
-    if(print == 1){
-      printf("\n");
-    }
     for(i = 0;i<number_of_points;i++){
         for(j=0;j<number_of_points;j++){
-            costMatrix[i][j] = distance(points[i],points[j]);
-            if(print == 1){
-                printf("%.lf ",i,j, costMatrix[i][j]);
+            if(i != j){
+                printf("\nDistance p%d x p%d: %.2lf",i,j,distance(points[i],points[j]));
             }
         }
-        printf("\n");
     }
 }
+
+void populateA(int number_of_points){
+    int i,j;
+    for(i = 0;i<number_of_points;i++){
+        for(j=0;j<number_of_points;j++){
+            if(i != j){
+                a[i][j] = distance(points[i],points[j]);
+            }
+        }
+    }
+}
+
+
 
 double distance(struct point a, struct point b ){
     return sqrt( pow(b.x - a.x, 2) + pow(b.y - a.y, 2));

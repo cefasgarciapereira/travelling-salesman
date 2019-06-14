@@ -17,7 +17,7 @@ int getPointsLength();
 int charToInt(char c);
 void printPoints(int n);
 struct point points[100];
-int visited[10],cost=0;
+int visited[100],cost=0;
 double a[100][100];
 
 void get(int n)
@@ -56,33 +56,32 @@ ncity=least(city, n);
 
 if(ncity==999)
     {
-     ncity=0;
-     printf("%d",ncity);
-     cost+=a[city][ncity];
-     return;
-     }
+        ncity=0;
+        printf("%d",ncity);
+        cost+=a[city][ncity];
+        return;
+    }
 
-mincost(ncity, n);
+    mincost(ncity, n);
 }
 
-int least(int c, int n)
-{
- int i,nc=999;
- int min=999,kmin;
- for(i=0;i<n;i++)
-    {
-     if((a[c][i]!=0)&&(visited[i]==0))
-     if(a[c][i]<min)
-     {
-      min=a[i][0]+a[c][i];
-      kmin=a[c][i];
-      nc=i;
-      }
-     }
+int least(int c, int n){
+    int i,nc=999;
+    int min=999,kmin;
+    for(i=0;i<n;i++){
+        if((a[c][i]!=0)&&(visited[i]==0)){
+            if(a[c][i]<min){
+                min=a[i][0]+a[c][i];
+                kmin=a[c][i];
+                nc=i;
+            }
+        }
+    }
 
-if(min!=999)
-cost+=kmin;
-return nc;
+    if(min!=999){
+        cost+=kmin;
+    }
+    return nc;
 }
 
 void put()
