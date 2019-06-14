@@ -5,16 +5,15 @@
 #include <time.h>
 #define INT_MAX 999999
 
-int n=4;
+int n;
 int dist[100][100];
 int VISITED_ALL;
-int dp[16][4];
+int dp[100][100];
 
 struct point {
     int x;
     int y;
 };
-
 double distance(struct point a, struct point b);
 double allDistances(int number_of_points, int print);
 char toggleXY(char xy);
@@ -23,7 +22,7 @@ int charToInt(char c);
 void printPoints(int n);
 struct point points[100];
 double costMatrix[100][100];
-
+int minFLag = 0;
 int  tsp(int mask,int pos){
 
 	if(mask==VISITED_ALL){
@@ -40,12 +39,10 @@ int  tsp(int mask,int pos){
 	for(int city=0;city<n;city++){
 
 		if((mask&(1<<city))==0){
-
 			int newAns = dist[pos][city] + tsp( mask|(1<<city), city);
 			ans = min(ans, newAns);
 		}
 	}
-
 	return dp[mask][pos] = ans;
 }
 
@@ -61,6 +58,7 @@ int main(){
     int pointsLength;
     int i;
     pointsLength = getPointsLength();
+    n = pointsLength;
     getPoints();
     printPoints(pointsLength);
     allDistances(pointsLength,1);
