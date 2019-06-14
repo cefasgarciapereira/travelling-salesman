@@ -51,13 +51,13 @@ void mincost(int city, int n)
 {
 int i,ncity;
 visited[city]=1;
-printf("%d -> ",city+1);
+printf("%d -> ",city);
 ncity=least(city, n);
 
 if(ncity==999)
     {
      ncity=0;
-     printf("%d",ncity+1);
+     printf("%d",ncity);
      cost+=a[city][ncity];
      return;
      }
@@ -106,7 +106,7 @@ int main(){
     srand(time(NULL));
     //time count starts
     get(pointsLength);
-    mincost(1, pointsLength);
+    mincost(0, pointsLength);
     put();
     end = clock();
     //calulate total time
