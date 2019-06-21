@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include<time.h>
+
 double a[100][100];
-int visited[10],n,cost=0; // from the algorithm
+int visited[1000],n,cost=0; // from the algorithm
 struct point {
     int x;
     int y;
@@ -24,31 +26,32 @@ void get()
 	{
 		printf("\n\n");
 		for(j=0;j < n;j++)
-			printf("\t%d",a[i][j]);
+			printf("%.f ",a[i][j]);
 	}
+    printf("\n");
 }
 
-void mincost(int city)
+void mincost(int city, int number_of_cities)
 {
 	int i,ncity;
 	visited[city]=1;	
 	printf("%d -> ",city);
-	ncity=least(city);
-	if(ncity==999)
+	ncity=least(city, number_of_cities);
+	if(ncity==9999999)
 	{
 		ncity=0;
 		printf("%d",ncity);
-		cost+=a[city][ncity];
+		cost += a[city][ncity];
 		return;
 	}
-	mincost(ncity);
+	mincost(ncity, number_of_cities);
 }
 
-int least(int c)
+int least(int c, int number_of_cities)
 {
-	int i,nc=999;
-	int min=999,kmin;
-	for(i=0;i < n;i++)
+	int i,nc=9999999;
+	int min=9999999,kmin;
+	for(i=0;i < number_of_cities;i++)
 	{
 		if((a[c][i]!=0)&&(visited[i]==0))
 			if(a[c][i] < min)
@@ -58,28 +61,33 @@ int least(int c)
 				nc=i;
 			}
 	}
-	if(min!=999)
+
+	if(min!=9999999)
 		cost+=kmin;
 	return nc;
-}
-
-void put()
-{
-	printf("\n\nMinimum cost:");
-	printf("%d",cost);
 }
 
 int main(){
     int pointsLength;
     int i;
+    double total_time;
+    clock_t start, end;
     pointsLength = getPointsLength();
     n = pointsLength;
     getPoints();
     //printPoints(pointsLength);
     //allDistances(pointsLength);
     populateA(pointsLength);
-	mincost(0);
+    
+    start = clock();
+    srand(time(NULL));
+    //time count starts
+	mincost(0, pointsLength);
+    end = clock();
+    //calulate total time
+    total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("\nThe Best Path Ever is %d\n",cost);
+    printf("Time taken to solve it: %.2f miliseconds\n", total_time*1000);
     return 0;
 }
 
@@ -179,9 +187,7 @@ void populateA(int number_of_points){
     int i,j;
     for(i = 0;i<number_of_points;i++){
         for(j=0;j<number_of_points;j++){
-            if(i != j){
-                a[i][j] = distance(points[i],points[j]);
-            }
+            a[i][j] = distance(points[i],points[j]);
         }
     }
 }
