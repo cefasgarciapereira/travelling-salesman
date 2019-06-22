@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <curses.h>
-#include <time.h>
 
 struct point {
     int x;
@@ -17,101 +15,61 @@ int getPointsLength();
 int charToInt(char c);
 void printPoints(int n);
 struct point points[100];
-int visited[100],cost=0;
-double a[100][100];
-
-void get(int n)
+ int matrix[100][100], visited_cities[100000], limit, cost = 0;
+ 
+int tsp(int c)
 {
-int i,j;
-
-for(i = 0;i<n;i++){
-    for(j=0;j<n;j++){
-      if(i == j){
-        a[i][j] = 0;
-      }else{
-        a[i][j] = distance(points[i],points[j]);
-      }
-    }
-    visited[i]=0;
-}
-
-// printf("\n\nThe Cost Matrix is:\n"); //print of adjacency Matrix
-//
-// for( i=0;i<n;i++)
-//      {
-//      printf("\n\n");
-//      for( j=0;j<n;j++)
-//           printf("\t%.2lf",a[i][j]);
-//
-//           }
-
-}
-
-void mincost(int city, int n)
-{
-int i,ncity;
-visited[city]=1;
-printf("%d -> ",city);
-ncity=least(city, n);
-
-if(ncity==999)
-    {
-        ncity=0;
-        printf("%d",ncity);
-        cost+=a[city][ncity];
-        return;
-    }
-
-    mincost(ncity, n);
-}
-
-int least(int c, int n){
-    int i,nc=999;
-    int min=999,kmin;
-    for(i=0;i<n;i++){
-        if((a[c][i]!=0)&&(visited[i]==0)){
-            if(a[c][i]<min){
-                min=a[i][0]+a[c][i];
-                kmin=a[c][i];
-                nc=i;
+      int count, nearest_city = 999;
+      int minimum = 999, temp;
+      for(count = 0; count < limit; count++)
+      {
+            if((matrix[c][count] != 0) && (visited_cities[count] == 0))
+            {
+                  if(matrix[c][count] < minimum)
+                  {
+                        minimum = matrix[count][0] + matrix[c][count];
+                  }
+                  temp = matrix[c][count];
+                  nearest_city = count;
             }
-        }
-    }
-
-    if(min!=999){
-        cost+=kmin;
-    }
-    return nc;
+      }
+      if(minimum != 999)
+      {
+            cost = cost + temp;
+      }
+      return nearest_city;
 }
-
-void put()
+ 
+void minimum_cost(int city)
 {
- printf("\n\nBest Distance Ever: ");
- printf("%d\n",cost);
+      int nearest_city;
+      visited_cities[city] = 1;
+      printf("%d -> ", city);
+      nearest_city = tsp(city);
+      if(nearest_city == 999)
+      {
+            nearest_city = 0;
+            printf("%d", nearest_city);
+            cost = cost + matrix[city][nearest_city];
+            return;
+      }
+      minimum_cost(nearest_city);
 }
-
+ 
 int main(){
     int pointsLength;
     int i;
     pointsLength = getPointsLength();
+    limit = getPointsLength();
     getPoints();
-    double total_time;
-    clock_t start, end;
-    //printPoints(pointsLength);
-    //allDistances(pointsLength);
-    //printf("\n\n");
+    allDistances(pointsLength);
 
-    start = clock();
-    srand(time(NULL));
-    //time count starts
-    get(pointsLength);
-    mincost(0, pointsLength);
-    put();
-    end = clock();
-    //calulate total time
-    total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("\nTime taken to solve it: %.2f miliseconds\n", total_time*1000);
+    printf("\nBest Path Ever:\n");
+    minimum_cost(0);
+    printf("\nBest Distance Ever: ");
+    printf("%d\n", cost);
 
+    printf("\n\n");
     return 0;
 }
 
@@ -201,7 +159,9 @@ double allDistances(int number_of_points){
     for(i = 0;i<number_of_points;i++){
         for(j=0;j<number_of_points;j++){
             if(i != j){
-                printf("\nDistance p%d x p%d: %.2lf",i,j,distance(points[i],points[j]));
+                //printf("\nDistance p%d x p%d: %.2lf",i,j,distance(points[i],points[j]));
+                matrix[i][j] = distance(points[i],points[j]);
+
             }
         }
     }
